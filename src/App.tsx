@@ -996,7 +996,11 @@ export default function App() {
             >
               <button 
                 onClick={() => { setCurrentPage('category-v2'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                className="flex items-center gap-1 text-sm font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2"
+                className={`flex items-center gap-1 text-sm font-normal transition-colors py-2 cursor-pointer border-none bg-transparent ${
+                  currentPage === 'category-v2' || currentPage === 'category' || currentPage === 'three-in-one-category' || currentPage === 'product-innovation-consulting' || currentPage === 'brand-innovation-consulting'
+                    ? 'text-[#007BC7] font-bold'
+                    : 'text-neutral-800 hover:text-[#005F96]'
+                }`}
               >
                 品类创新咨询
                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '品类创新咨询' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
@@ -1014,7 +1018,7 @@ export default function App() {
                   >
                     <button 
                       onClick={() => { handleNavigateUrl('/three-in-one-category'); setActiveMenu(null); }} 
-                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
+                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
                         currentPage === 'three-in-one-category' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'
                       }`}
                     >
@@ -1022,7 +1026,7 @@ export default function App() {
                     </button>
                     <button 
                       onClick={() => { handleNavigateUrl('/product-innovation-consulting'); setActiveMenu(null); }} 
-                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
+                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
                         currentPage === 'product-innovation-consulting' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'
                       }`}
                     >
@@ -1030,7 +1034,7 @@ export default function App() {
                     </button>
                     <button 
                       onClick={() => { handleNavigateUrl('/brand-innovation-consulting'); setActiveMenu(null); }} 
-                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
+                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
                         currentPage === 'brand-innovation-consulting' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'
                       }`}
                     >
@@ -1046,7 +1050,11 @@ export default function App() {
               onMouseEnter={() => setActiveMenu('品牌与产品设计')}
               onMouseLeave={() => setActiveMenu(null)}
             >
-              <button className="flex items-center gap-1 text-sm font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2">
+              <button className={`flex items-center gap-1 text-sm font-normal transition-colors py-2 cursor-pointer border-none bg-transparent ${
+                currentPage === 'product' || currentPage === 'brand' || currentPage === 'industrial-design' || currentPage === 'structural-design' || currentPage === 'production-landing' || currentPage === 'full-case-design' || currentPage === 'packaging-design' || currentPage === 'ip-design'
+                  ? 'text-[#007BC7] font-bold'
+                  : 'text-neutral-800 hover:text-[#005F96]'
+              }`}>
                 品牌&产品设计
                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '品牌与产品设计' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
               </button>
@@ -1089,7 +1097,7 @@ export default function App() {
                                 setActiveMenu(null); 
                                 window.scrollTo({ top: 0, behavior: 'smooth' }); 
                               }} 
-                              className="py-2 px-3 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-700 transition-all font-medium text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
+                              className="py-2 px-3 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-800 transition-all font-normal text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
                             >
                               <span>{item.name}</span>
                               <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#005F96] shrink-0" />
@@ -1126,7 +1134,7 @@ export default function App() {
                                 setActiveMenu(null); 
                                 window.scrollTo({ top: 0, behavior: 'smooth' }); 
                               }} 
-                              className="py-2 px-3 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-700 transition-all font-medium text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
+                              className="py-2 px-3 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-800 transition-all font-normal text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
                             >
                               <span>{item.name}</span>
                               <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#005F96] shrink-0" />
@@ -1147,7 +1155,11 @@ export default function App() {
             >
               <button 
                 onClick={() => { setCurrentPage('industry'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                className="flex items-center gap-1 text-sm font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2 cursor-pointer"
+                className={`flex items-center gap-1 text-sm font-normal transition-colors py-2 cursor-pointer border-none bg-transparent ${
+                  currentPage === 'industry' || currentPage === 'industry-detail'
+                    ? 'text-[#007BC7] font-bold'
+                    : 'text-neutral-800 hover:text-[#005F96]'
+                }`}
               >
                 行业
                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '行业' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
@@ -1181,7 +1193,7 @@ export default function App() {
                             <button 
                               key={item.path}
                               onClick={() => { handleNavigateUrl(item.path); setActiveMenu(null); }} 
-                              className="py-2 px-2.5 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-700 transition-all font-medium text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
+                              className="py-2 px-2.5 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-800 transition-all font-normal text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
                             >
                               <span>{item.name}</span>
                               <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#005F96] shrink-0" />
@@ -1208,7 +1220,7 @@ export default function App() {
                             <button 
                               key={item.path}
                               onClick={() => { handleNavigateUrl(item.path); setActiveMenu(null); }} 
-                              className="py-2 px-2.5 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-700 transition-all font-medium text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
+                              className="py-2 px-2.5 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-800 transition-all font-normal text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
                             >
                               <span>{item.name}</span>
                               <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#005F96] shrink-0" />
@@ -1224,8 +1236,8 @@ export default function App() {
 
             <button 
               onClick={() => { handleNavigateUrl('/cases'); setActiveMenu(null); }} 
-              className={`text-sm font-medium transition-colors border-none bg-transparent cursor-pointer ${
-                currentPage === 'cases' || currentPage === 'case-detail' ? 'text-[#007BC7] font-bold' : 'text-neutral-700 hover:text-[#005F96]'
+              className={`text-sm font-normal transition-colors border-none bg-transparent cursor-pointer ${
+                currentPage === 'cases' || currentPage === 'case-detail' ? 'text-[#007BC7] font-bold' : 'text-neutral-800 hover:text-[#005F96]'
               }`}
             >
               案例
@@ -1238,8 +1250,8 @@ export default function App() {
             >
               <button 
                 onClick={() => { setCurrentPage('three-in-one'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                className={`flex items-center gap-1 text-sm font-medium transition-colors py-2 cursor-pointer border-none bg-transparent ${
-                  currentPage === 'three-in-one' || currentPage === 'three-in-one-learning' || currentPage === 'insights' ? 'text-[#007BC7] font-bold' : 'text-neutral-700 hover:text-[#005F96]'
+                className={`flex items-center gap-1 text-sm font-normal transition-colors py-2 cursor-pointer border-none bg-transparent ${
+                  currentPage === 'three-in-one' || currentPage === 'three-in-one-learning' || currentPage === 'insights' || currentPage === 'course-landing' ? 'text-[#007BC7] font-bold' : 'text-neutral-800 hover:text-[#005F96]'
                 }`}
               >
                 三品合一
@@ -1257,7 +1269,7 @@ export default function App() {
                   >
                     <button
                       onClick={() => { handleNavigateUrl('/three-in-one'); setActiveMenu(null); }}
-                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
+                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
                         currentPage === 'three-in-one' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'
                       }`}
                     >
@@ -1266,7 +1278,7 @@ export default function App() {
 
                     <button
                       onClick={() => { handleNavigateUrl('/three-in-one-learning'); setActiveMenu(null); }}
-                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
+                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
                         currentPage === 'three-in-one-learning' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'
                       }`}
                     >
@@ -1275,7 +1287,7 @@ export default function App() {
 
                     <button
                       onClick={() => { handleNavigateUrl('/insights'); setActiveMenu(null); }}
-                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
+                      className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${
                         currentPage === 'insights' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'
                       }`}
                     >
@@ -1291,8 +1303,8 @@ export default function App() {
               onMouseEnter={() => setActiveMenu('我们')}
               onMouseLeave={() => setActiveMenu(null)}
             >
-              <button className={`flex items-center gap-1 text-sm font-medium transition-colors py-2 cursor-pointer border-none bg-transparent ${
-                currentPage === 'about' || currentPage === 'contact' || currentPage === 'news' || currentPage === 'news-detail' || currentPage === 'success-path' ? 'text-[#007BC7] font-bold' : 'text-neutral-700 hover:text-[#005F96]'
+              <button className={`flex items-center gap-1 text-sm font-normal transition-colors py-2 cursor-pointer border-none bg-transparent ${
+                currentPage === 'about' || currentPage === 'contact' || currentPage === 'news' || currentPage === 'news-detail' || currentPage === 'success-path' ? 'text-[#007BC7] font-bold' : 'text-neutral-800 hover:text-[#005F96]'
               }`}>
                 我们
                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '我们' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
@@ -1307,10 +1319,10 @@ export default function App() {
                     transition={{ duration: 0.2 }}
                     className="absolute right-0 top-full mt-1 w-max bg-white border border-neutral-100 shadow-2xl rounded-2xl p-4 flex items-center gap-2 z-50"
                   >
-                    <button onClick={() => { handleNavigateUrl('/about'); setActiveMenu(null); }} className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${currentPage === 'about' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>关于我们</button>
-                    <button onClick={() => { handleNavigateUrl('/contact'); setActiveMenu(null); }} className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${currentPage === 'contact' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>联系我们</button>
-                    <button onClick={() => { handleNavigateUrl('/news'); setActiveMenu(null); }} className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${currentPage === 'news' || currentPage === 'news-detail' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>新闻中心</button>
-                    <button onClick={() => { handleNavigateUrl('/success-path'); setActiveMenu(null); }} className={`p-2.5 px-4 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${currentPage === 'success-path' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>成功路径</button>
+                    <button onClick={() => { handleNavigateUrl('/about'); setActiveMenu(null); }} className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${currentPage === 'about' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>关于我们</button>
+                    <button onClick={() => { handleNavigateUrl('/contact'); setActiveMenu(null); }} className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${currentPage === 'contact' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>联系我们</button>
+                    <button onClick={() => { handleNavigateUrl('/news'); setActiveMenu(null); }} className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${currentPage === 'news' || currentPage === 'news-detail' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>新闻中心</button>
+                    <button onClick={() => { handleNavigateUrl('/success-path'); setActiveMenu(null); }} className={`p-2.5 px-4 rounded-xl block text-center text-sm font-normal transition-colors border-none bg-transparent cursor-pointer whitespace-nowrap ${currentPage === 'success-path' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>成功路径</button>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -1385,17 +1397,17 @@ export default function App() {
               
               <nav aria-label="手机端导航" className="grid gap-2">
                 <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">业务专区</span>
-                <button onClick={() => { setCurrentPage('category-v2'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-[#007BC7] font-bold text-left cursor-pointer flex items-center justify-between">
+                <button onClick={() => { setCurrentPage('category-v2'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-normal text-left cursor-pointer flex items-center justify-between ${currentPage === 'category-v2' || currentPage === 'category' ? 'text-[#007BC7] font-bold' : 'text-neutral-800'}`}>
                   <span>品类创新咨询</span>
                 </button>
-                <button onClick={() => { setCurrentPage('three-in-one-category'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">三品合一品类创新咨询</button>
-                <button onClick={() => { setCurrentPage('product-innovation-consulting'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">产品创新 0–1 全案咨询</button>
-                <button onClick={() => { setCurrentPage('brand-innovation-consulting'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品牌创新 0–1 全案咨询</button>
-                <button onClick={() => { setCurrentPage('product'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">产品创新</button>
-                <button onClick={() => { setCurrentPage('brand'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品牌创新</button>
+                <button onClick={() => { setCurrentPage('three-in-one-category'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-normal text-neutral-800 text-left cursor-pointer">三品合一品类创新咨询</button>
+                <button onClick={() => { setCurrentPage('product-innovation-consulting'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-normal text-neutral-800 text-left cursor-pointer">产品创新 0–1 全案咨询</button>
+                <button onClick={() => { setCurrentPage('brand-innovation-consulting'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-normal text-neutral-800 text-left cursor-pointer">品牌创新 0–1 全案咨询</button>
+                <button onClick={() => { setCurrentPage('product'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-normal text-neutral-800 text-left cursor-pointer">产品创新</button>
+                <button onClick={() => { setCurrentPage('brand'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-normal text-neutral-800 text-left cursor-pointer">品牌创新</button>
                 <button 
                   onClick={() => { handleNavigateUrl('/cases'); setMobileMenuOpen(false); }} 
-                  className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  className={`py-2 px-3 rounded-lg text-sm font-normal text-left transition-colors border-none bg-transparent cursor-pointer ${
                     currentPage === 'cases' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
                   }`}
                 >
@@ -1403,7 +1415,7 @@ export default function App() {
                 </button>
                 <button 
                   onClick={() => { handleNavigateUrl('/three-in-one'); setMobileMenuOpen(false); }} 
-                  className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  className={`py-2 px-3 rounded-lg text-sm font-normal text-left transition-colors border-none bg-transparent cursor-pointer ${
                     currentPage === 'three-in-one' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
                   }`}
                 >
@@ -1411,7 +1423,7 @@ export default function App() {
                 </button>
                 <button 
                   onClick={() => { handleNavigateUrl('/three-in-one-learning'); setMobileMenuOpen(false); }} 
-                  className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  className={`py-2 px-3 rounded-lg text-sm font-normal text-left transition-colors border-none bg-transparent cursor-pointer ${
                     currentPage === 'three-in-one-learning' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
                   }`}
                 >
@@ -1419,7 +1431,7 @@ export default function App() {
                 </button>
                 <button 
                   onClick={() => { handleNavigateUrl('/insights'); setMobileMenuOpen(false); }} 
-                  className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  className={`py-2 px-3 rounded-lg text-sm font-normal text-left transition-colors border-none bg-transparent cursor-pointer ${
                     currentPage === 'insights' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
                   }`}
                 >
@@ -1429,7 +1441,7 @@ export default function App() {
                 <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mt-2">我们</span>
                 <button 
                   onClick={() => { handleNavigateUrl('/about'); setMobileMenuOpen(false); }} 
-                  className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  className={`py-2 px-3 rounded-lg text-sm font-normal text-left transition-colors border-none bg-transparent cursor-pointer ${
                     currentPage === 'about' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
                   }`}
                 >
@@ -1437,7 +1449,7 @@ export default function App() {
                 </button>
                 <button 
                   onClick={() => { handleNavigateUrl('/contact'); setMobileMenuOpen(false); }} 
-                  className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  className={`py-2 px-3 rounded-lg text-sm font-normal text-left transition-colors border-none bg-transparent cursor-pointer ${
                     currentPage === 'contact' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
                   }`}
                 >
@@ -1445,7 +1457,7 @@ export default function App() {
                 </button>
                 <button 
                   onClick={() => { handleNavigateUrl('/news'); setMobileMenuOpen(false); }} 
-                  className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  className={`py-2 px-3 rounded-lg text-sm font-normal text-left transition-colors border-none bg-transparent cursor-pointer ${
                     currentPage === 'news' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
                   }`}
                 >
@@ -1453,7 +1465,7 @@ export default function App() {
                 </button>
                 <button 
                   onClick={() => { handleNavigateUrl('/success-path'); setMobileMenuOpen(false); }} 
-                  className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  className={`py-2 px-3 rounded-lg text-sm font-normal text-left transition-colors border-none bg-transparent cursor-pointer ${
                     currentPage === 'success-path' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
                   }`}
                 >

@@ -915,27 +915,26 @@ section[id], div[id] {
   -webkit-backdrop-filter: none !important;
 }
 
-/* 导航栏文字透明度降低20% (基础透明度 80%，交互 hover 时恢复 100%) */
-.site-header nav > div > button,
-.site-header nav > button,
-.site-header nav > a,
+/* 顶部辅助微型信息栏文字透明度 */
 .site-header .border-b .text-neutral-500,
 .site-header .border-b .text-neutral-600,
 .site-header .border-b .text-neutral-700,
 .site-header .border-b span,
 .site-header input::placeholder {
-  opacity: 0.8;
+  opacity: 0.85;
   transition: opacity 0.2s ease, color 0.2s ease;
 }
 
-.site-header nav > div > button:hover,
-.site-header nav > button:hover,
-.site-header nav > a:hover,
-.site-header .border-b span:hover,
-.site-header nav > div > button:focus-visible,
-.site-header nav > button:focus-visible,
-.site-header nav > a:focus-visible {
+.site-header .border-b span:hover {
   opacity: 1;
+}
+
+/* 主导航栏文字与展开的分栏文字颜色保持完全一致 (100% 透明度，text-neutral-800) */
+.site-header nav > div > button,
+.site-header nav > button,
+.site-header nav > a {
+  opacity: 1;
+  transition: color 0.2s ease;
 }
 
 /* 下拉浮层内部文字保持清晰可读 (恢复正常 100% 透明度) */
