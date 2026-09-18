@@ -540,7 +540,7 @@ export default function CategoryConsultingPage({
           >
             <div className="w-full aspect-[16/9] overflow-hidden bg-[#F5F5F7]">
               <video 
-                src="https://github.com/minaxyue-ops/MINA/releases/download/1/2026-08-20.163819.mp4" 
+                src="https://github.com/minaxyue-ops/MINA/releases/download/1/SANpinheyi.mp4" 
                 poster={methodologyVisualImg}
                 autoPlay 
                 loop 

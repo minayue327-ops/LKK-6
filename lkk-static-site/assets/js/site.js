@@ -298,81 +298,291 @@
   }
 
   // =========================================================================
-  // 8. 案例筛选 Tab 交互 (Cases Filtering Engine)
+  // 8. 案例筛选、搜索与分页加载引擎 (Cases Engine)
   // =========================================================================
-  function initCaseFilterTabs() {
-    const tabs = document.querySelectorAll('.case-filter-tab');
-    const caseCards = document.querySelectorAll('.case-grid-card');
-    if (!tabs.length || !caseCards.length) return;
+  function initCasesEngine() {
+    const grid = document.querySelector('#cases-grid-container');
+    if (!grid) return;
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const category = tab.getAttribute('data-case-category');
-        tabs.forEach(t => {
-          t.classList.remove('bg-[#007BC7]', 'text-white', 'font-bold');
-          t.classList.add('bg-neutral-100', 'text-neutral-600');
-        });
-        tab.classList.add('bg-[#007BC7]', 'text-white', 'font-bold');
-        tab.classList.remove('bg-neutral-100', 'text-neutral-600');
+    const searchInput = document.querySelector('#cases-search-input');
+    const searchClear = document.querySelector('#cases-search-clear');
+    const loadMoreBtn = document.querySelector('#cases-load-more-btn');
+    const loadedCountEl = document.querySelector('#cases-loaded-count');
+    const totalCountEl = document.querySelector('#cases-total-count');
+    const progressBar = document.querySelector('#cases-progress-bar');
+    const paginationWrapper = document.querySelector('#cases-pagination-wrapper');
 
-        caseCards.forEach(card => {
-          const cardCats = (card.getAttribute('data-category') || '').split(' ');
-          if (category === 'all' || cardCats.includes(category)) {
-            card.classList.remove('hidden');
-          } else {
-            card.classList.add('hidden');
-          }
-        });
-        updateDesktopScale();
+    let selectedIndustry = '全部';
+    let selectedService = '全部';
+    let searchQuery = '';
+    let currentLimit = 24;
+
+    const allCases = window.LKK_ALL_CASES || [];
+
+    function renderCases() {
+      const filtered = allCases.filter(item => {
+        const matchIndustry = selectedIndustry === '全部' || item.industry === selectedIndustry;
+        const matchService = selectedService === '全部' || item.service === selectedService;
+        const matchSearch = !searchQuery || 
+          (item.title && item.title.toLowerCase().includes(searchQuery)) ||
+          (item.client && item.client.toLowerCase().includes(searchQuery)) ||
+          (item.desc && item.desc.toLowerCase().includes(searchQuery)) ||
+          (item.industry && item.industry.toLowerCase().includes(searchQuery));
+        return matchIndustry && matchService && matchSearch;
       });
+
+      const total = filtered.length;
+      const visible = filtered.slice(0, currentLimit);
+
+      if (visible.length === 0) {
+        grid.innerHTML = '<div class="col-span-full py-16 text-center text-neutral-400"><p class="text-base font-medium">未找到符合条件的案例</p><p class="text-xs text-neutral-400 mt-2">请尝试更换筛选条件或搜索关键词</p></div>';
+      } else {
+        grid.innerHTML = visible.map(c => `
+          <a href="case-detail.html?case=${c.id}" class="case-card-v2 block relative text-left w-full outline-none select-none overflow-hidden text-decoration-none">
+            <img src="${c.image}" alt="${c.title}" referrerPolicy="no-referrer" loading="lazy" class="w-full h-full object-cover" />
+            <div class="case-summary-v2">
+              <div class="case-brand-label">${c.client || ''}</div>
+              <button type="button" class="case-detail-arrow cursor-pointer border-none" data-case-id="${c.id}" aria-label="查看案例简介">
+                <span>案例简介</span>
+                <span>↗</span>
+              </button>
+              <div class="case-bottom-block">
+                <div class="case-divider">-</div>
+                <div class="case-title">${c.title}</div>
+                <div class="case-desc">${c.desc || ''}</div>
+              </div>
+            </div>
+          </a>
+        `).join('');
+      }
+
+      if (loadedCountEl) loadedCountEl.textContent = visible.length;
+      if (totalCountEl) totalCountEl.textContent = total;
+      if (progressBar) {
+        const pct = total === 0 ? 0 : Math.min(100, Math.round((visible.length / total) * 100));
+        progressBar.style.width = pct + '%';
+      }
+
+      if (loadMoreBtn && paginationWrapper) {
+        if (visible.length >= total) {
+          loadMoreBtn.style.display = 'none';
+        } else {
+          loadMoreBtn.style.display = 'inline-flex';
+        }
+      }
+
+      bindCaseDetailArrows();
+      updateDesktopScale();
+    }
+
+    const filterButtons = document.querySelectorAll('button');
+    filterButtons.forEach(btn => {
+      const text = btn.textContent.trim();
+      const parentRow = btn.closest('.flex.items-start');
+      if (!parentRow) return;
+
+      const label = parentRow.querySelector('span');
+      if (!label) return;
+
+      const labelText = label.textContent.trim();
+      if (labelText.includes('行业')) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          parentRow.querySelectorAll('button').forEach(b => {
+            b.className = 'relative px-4 py-1.5 text-xs font-medium rounded-full transition-colors duration-200 shrink-0 select-none cursor-pointer border-none bg-transparent text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100/70';
+            const bgDiv = b.querySelector('div');
+            if (bgDiv) bgDiv.remove();
+          });
+          btn.className = 'relative px-4 py-1.5 text-xs font-medium rounded-full transition-colors duration-200 shrink-0 select-none cursor-pointer border-none bg-transparent text-white font-bold';
+          btn.insertAdjacentHTML('afterbegin', '<div class="absolute inset-0 bg-[#007BC7] rounded-full -z-0"></div>');
+          selectedIndustry = text;
+          currentLimit = 24;
+          renderCases();
+        });
+      } else if (labelText.includes('服务')) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          parentRow.querySelectorAll('button').forEach(b => {
+            b.className = 'relative px-4 py-1.5 text-xs font-medium rounded-full transition-colors duration-200 shrink-0 select-none cursor-pointer border-none bg-transparent text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100/70';
+            const bgDiv = b.querySelector('div');
+            if (bgDiv) bgDiv.remove();
+          });
+          btn.className = 'relative px-4 py-1.5 text-xs font-medium rounded-full transition-colors duration-200 shrink-0 select-none cursor-pointer border-none bg-transparent text-white font-bold';
+          btn.insertAdjacentHTML('afterbegin', '<div class="absolute inset-0 bg-[#007BC7] rounded-full -z-0"></div>');
+          selectedService = text;
+          currentLimit = 24;
+          renderCases();
+        });
+      }
     });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        if (searchClear) searchClear.style.display = searchQuery ? 'block' : 'none';
+        currentLimit = 24;
+        renderCases();
+      });
+    }
+
+    if (searchClear) {
+      searchClear.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        searchQuery = '';
+        searchClear.style.display = 'none';
+        currentLimit = 24;
+        renderCases();
+      });
+    }
+
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', () => {
+        currentLimit += 24;
+        renderCases();
+      });
+    }
+
+    renderCases();
   }
 
   // =========================================================================
-  // 9. 弹出式咨询弹窗与案例弹窗控制器 (Modal Controller)
+  // 9. 全局弹窗控制器 (Modals: Contact & Case Popup)
   // =========================================================================
-  function initModals() {
-    const contactModal = document.querySelector('#contact-modal');
-    const caseModal = document.querySelector('#case-preview-modal');
+  function openContactModal() {
+    const modal = document.querySelector('#global-contact-modal');
+    if (modal) {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+  }
 
-    // 绑定所有触发联系我们弹窗的按钮
-    document.querySelectorAll('[data-open-modal="contact"], .btn-open-contact-modal').forEach(btn => {
+  function closeContactModal() {
+    const modal = document.querySelector('#global-contact-modal');
+    if (modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+
+  function openCaseModal(caseItem) {
+    const modal = document.querySelector('#global-case-modal');
+    if (!modal || !caseItem) return;
+
+    const img = modal.querySelector('#modal-case-image');
+    const title = modal.querySelector('#modal-case-title');
+    const desc = modal.querySelector('#modal-case-desc');
+    const industry = modal.querySelector('#modal-case-industry');
+    const service = modal.querySelector('#modal-case-service');
+    const detailBtn = modal.querySelector('#modal-case-detail-btn');
+
+    if (img) img.src = caseItem.image || 'assets/images/7.15.1.3.gif';
+    if (title) title.textContent = caseItem.title || '';
+    if (desc) desc.textContent = caseItem.desc || '';
+    if (industry) industry.textContent = caseItem.industry || '';
+    if (service) service.textContent = caseItem.service || '';
+    if (detailBtn) detailBtn.href = 'case-detail.html?case=' + caseItem.id;
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCaseModal() {
+    const modal = document.querySelector('#global-case-modal');
+    if (modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+
+  function bindCaseDetailArrows() {
+    const allCases = window.LKK_ALL_CASES || [];
+    document.querySelectorAll('.case-detail-arrow').forEach(btn => {
+      btn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const caseId = btn.getAttribute('data-case-id');
+        const item = allCases.find(c => c.id === caseId);
+        if (item) {
+          openCaseModal(item);
+        } else {
+          const parentA = btn.closest('a');
+          if (parentA) window.location.href = parentA.href;
+        }
+      };
+    });
+  }
+
+  function initModals() {
+    document.querySelectorAll('[data-open-modal="contact"], .btn-open-contact-modal, #modal-case-contact-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (contactModal) {
-          contactModal.classList.remove('hidden');
-          document.body.style.overflow = 'hidden';
-        }
+        closeCaseModal();
+        openContactModal();
       });
     });
 
-    // 绑定所有弹窗关闭按钮
-    document.querySelectorAll('.modal-close-btn, .modal-backdrop').forEach(closeEl => {
-      closeEl.addEventListener('click', () => {
-        if (contactModal) contactModal.classList.add('hidden');
-        if (caseModal) caseModal.classList.add('hidden');
-        document.body.style.overflow = '';
-      });
+    document.querySelectorAll('.contact-modal-close, .contact-modal-overlay').forEach(el => {
+      el.addEventListener('click', closeContactModal);
+    });
+
+    document.querySelectorAll('.case-modal-close, .case-modal-overlay').forEach(el => {
+      el.addEventListener('click', closeCaseModal);
     });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        if (contactModal) contactModal.classList.add('hidden');
-        if (caseModal) caseModal.classList.add('hidden');
-        document.body.style.overflow = '';
+        closeContactModal();
+        closeCaseModal();
       }
     });
+
+    bindCaseDetailArrows();
   }
 
   // =========================================================================
-  // 10. 标准表单提交拦截与用户友好交互反馈 (Form Submissions)
+  // 10. 案例详情页侧栏智能控制 (Sticky Sidebar Logic)
+  // =========================================================================
+  function initCaseDetailSidebar() {
+    const sidebar = document.querySelector('.case-detail-sidebar');
+    const collapseBtn = document.querySelector('#case-sidebar-collapse-btn');
+    const expandWrapper = document.querySelector('#case-sidebar-expand-wrapper');
+    const expandBtn = document.querySelector('#case-sidebar-expand-btn');
+
+    if (!sidebar) return;
+
+    const content = sidebar.querySelector('.anli-content-left');
+    if (content) {
+      content.style.opacity = '1';
+      content.style.transition = 'opacity 0.3s ease';
+    }
+
+    if (collapseBtn) {
+      collapseBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        sidebar.style.display = 'none';
+        if (expandWrapper) expandWrapper.style.display = 'block';
+        updateDesktopScale();
+      });
+    }
+
+    if (expandBtn) {
+      expandBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        sidebar.style.display = 'block';
+        if (expandWrapper) expandWrapper.style.display = 'none';
+        updateDesktopScale();
+      });
+    }
+  }
+
+  // =========================================================================
+  // 11. 标准表单提交拦截与用户友好交互反馈 (Form Submissions)
   // =========================================================================
   function initForms() {
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-        // 校验必填项
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
@@ -386,7 +596,29 @@
         }
 
         setTimeout(() => {
-          // 提交成功反馈展示
+          if (form.id === 'global-modal-form') {
+            const card = form.parentElement;
+            if (card) {
+              card.innerHTML = `
+                <button type="button" class="contact-modal-close absolute top-6 right-6 p-1.5 rounded-full hover:bg-neutral-100 text-neutral-400 hover:text-neutral-700 transition-all border-none bg-transparent cursor-pointer" aria-label="关闭弹窗">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                </button>
+                <div class="py-12 text-center flex flex-col items-center justify-center animate-modal-in">
+                  <div class="w-16 h-16 bg-[#E5F2FA] text-[#007BC7] rounded-full flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  <h4 class="text-xl font-bold text-neutral-900">恭喜，创新方案需求提交成功！</h4>
+                  <p class="text-xs text-neutral-500 mt-2 max-w-md mx-auto leading-relaxed">
+                    我们已收到您的项目概况。负责该垂直行业的品类总监与资深主笔设计师将在下一个工作日前与您取得联系，并为您量身打造第一版“品类策略初稿”。
+                  </p>
+                </div>
+              `;
+              const newClose = card.querySelector('.contact-modal-close');
+              if (newClose) newClose.addEventListener('click', closeContactModal);
+            }
+            return;
+          }
+
           const successContainer = form.parentElement.querySelector('.form-success-message');
           if (successContainer) {
             form.classList.add('hidden');
@@ -399,47 +631,31 @@
               btn.disabled = false;
             }
           }
-        }, 600);
+        }, 500);
       });
     });
   }
 
   // =========================================================================
-  // 11. 动态 URL 参数支持 (URL Parameters & Tab Switcher)
+  // 12. 动态 URL 参数支持 (URL Parameters & Dynamic Routing)
   // =========================================================================
   function initUrlParams() {
     const params = new URLSearchParams(window.location.search);
-    const caseId = params.get('id');
-    const serviceId = params.get('service');
-    const industryKey = params.get('key');
+    const caseParam = params.get('case') || params.get('id');
 
-    // 针对案例详情页的多案例切换
-    if (caseId && document.querySelector('#case-detail-container')) {
-      const caseSections = document.querySelectorAll('[data-case-id]');
-      caseSections.forEach(sec => {
-        if (sec.getAttribute('data-case-id') === caseId) {
-          sec.classList.remove('hidden');
-        } else {
-          sec.classList.add('hidden');
-        }
-      });
-    }
-
-    // 针对服务详情页的多服务切换
-    if (serviceId && document.querySelector('#service-detail-container')) {
-      const serviceSections = document.querySelectorAll('[data-service-id]');
-      serviceSections.forEach(sec => {
-        if (sec.getAttribute('data-service-id') === serviceId) {
-          sec.classList.remove('hidden');
-        } else {
-          sec.classList.add('hidden');
-        }
-      });
+    if (caseParam && window.LKK_ALL_CASES) {
+      const caseItem = window.LKK_ALL_CASES.find(c => c.id === caseParam);
+      if (caseItem) {
+        const titleEl = document.querySelector('.anli-title, #case-detail-title');
+        if (titleEl) titleEl.textContent = caseItem.title;
+        const brandEl = document.querySelector('.anli-brand, #case-detail-brand');
+        if (brandEl) brandEl.textContent = caseItem.client;
+      }
     }
   }
 
   // =========================================================================
-  // 12. DOM 加载完成初始化
+  // 13. DOM 加载完成初始化
   // =========================================================================
   document.addEventListener('DOMContentLoaded', () => {
     updateDesktopScale();
@@ -449,12 +665,12 @@
     initCounters();
     initScrollRevealHeadings();
     initHeroCarousel();
-    initCaseFilterTabs();
+    initCasesEngine();
     initModals();
+    initCaseDetailSidebar();
     initForms();
     initUrlParams();
 
-    // 确保所有图片加载后重新计算高度
     document.querySelectorAll('img').forEach(img => {
       if (!img.complete) {
         img.addEventListener('load', updateDesktopScale, { once: true });
